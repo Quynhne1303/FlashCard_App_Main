@@ -289,7 +289,6 @@ const HomeScreen = () => {
         <Text style={styles.refreshButtonText}>🔄 Làm mới</Text>
       </TouchableOpacity>
 
-      {/* Modal chỉnh sửa tên bộ thẻ */}
       <Modal
         visible={editModalVisible}
         animationType="slide"

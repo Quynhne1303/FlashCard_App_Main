@@ -28,7 +28,7 @@ const SimilarCardsScreen = ({ route, navigation }) => {
       const data = await getFlashcardsByDeck(deckId);
       const cardsWithMatched = data.map((card) => ({
         ...card,
-        matched: false, // Thêm thuộc tính matched để theo dõi thẻ đã đúng
+        matched: false,
       }));
       setRemainingCards(cardsWithMatched);
       setShuffledFronts(shuffleArray(cardsWithMatched));
@@ -43,7 +43,6 @@ const SimilarCardsScreen = ({ route, navigation }) => {
     const isMatch = selectedFront.id === selectedBack.id;
 
     if (isMatch) {
-      // Cập nhật matched: true cho cặp thẻ đúng
       const updatedCards = remainingCards.map((card) =>
         card.id === selectedFront.id || card.id === selectedBack.id
           ? { ...card, matched: true }
@@ -51,7 +50,6 @@ const SimilarCardsScreen = ({ route, navigation }) => {
       );
       setRemainingCards(updatedCards);
 
-      // Cập nhật danh sách shuffledFronts và shuffledBacks
       setShuffledFronts((prev) =>
         prev.filter((card) => card.id !== selectedFront.id)
       );
@@ -61,7 +59,6 @@ const SimilarCardsScreen = ({ route, navigation }) => {
 
       setCorrectCount((prev) => prev + 1);
 
-      // Kiểm tra nếu hết thẻ
       if (updatedCards.filter((card) => !card.matched).length === 0) {
         Alert.alert(
           "🎉 Hoàn thành!",
@@ -103,7 +100,7 @@ const SimilarCardsScreen = ({ route, navigation }) => {
             data={shuffledFronts}
             keyExtractor={(item) => item.id + "-front"}
             renderItem={({ item }) => (
-              !item.matched && ( // Kiểm tra xem thẻ đã được ghép đúng chưa
+              !item.matched && (
                 <TouchableOpacity
                   style={[
                     styles.itemBox,
@@ -124,7 +121,7 @@ const SimilarCardsScreen = ({ route, navigation }) => {
             data={shuffledBacks}
             keyExtractor={(item) => item.id + "-back"}
             renderItem={({ item }) => (
-              !item.matched && ( // Kiểm tra xem thẻ đã được ghép đúng chưa
+              !item.matched && (
                 <TouchableOpacity
                   style={[
                     styles.itemBox,

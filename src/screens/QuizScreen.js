@@ -15,7 +15,7 @@ import { db } from "../firebase/firebaseConfig";
 
 const QuizScreen = ({ route, navigation }) => {
   const { deckId } = route.params;
-  const [cards, setCards] = useState([]); // [{card, direction}]
+  const [cards, setCards] = useState([]);
   const [userAnswer, setUserAnswer] = useState("");
   const [showResult, setShowResult] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
@@ -27,7 +27,6 @@ const QuizScreen = ({ route, navigation }) => {
     if (flashcards.length === 0) {
       Alert.alert("Không có thẻ trong bộ này.");
     } else {
-      // Gắn mỗi flashcard một chiều random
       const cardQueue = flashcards.map((card) => ({
         card,
         direction: randomDirection(),
@@ -53,14 +52,13 @@ const QuizScreen = ({ route, navigation }) => {
     setIsCorrect(correct);
     setShowResult(true);
   
-    // ✅ Ghi thống kê vào Firestore
     try {
       const currentUser = getAuth().currentUser;
       if (currentUser) {
         await addDoc(collection(db, "statistics"), {
           userId: currentUser.uid,
           cardId: card.id,
-          deckId: card.deckId || deckId, // fallback nếu card.deckId không có
+          deckId: card.deckId || deckId,
           correct,
           timestamp: Date.now(),
         });
@@ -74,7 +72,6 @@ const QuizScreen = ({ route, navigation }) => {
     const current = cards[0];
 
     if (isCorrect) {
-      // Nếu đúng, loại khỏi hàng đợi
       const newCards = cards.slice(1);
       if (newCards.length === 0) {
         Alert.alert("Hoàn thành", "Bạn đã hoàn thành bài kiểm tra!");
@@ -83,7 +80,6 @@ const QuizScreen = ({ route, navigation }) => {
         setCards(newCards);
       }
     } else {
-      // Nếu sai, đưa thẻ xuống cuối (giữ nguyên direction)
       setCards((prev) => [...prev.slice(1), current]);
     }
 

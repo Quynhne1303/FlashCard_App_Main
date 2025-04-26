@@ -21,7 +21,6 @@ export default function LoginScreen({ navigation }) {
 
       if (signedInUser.emailVerified) {
         Alert.alert("✅ Đăng nhập thành công!");
-        // Điều hướng vào app tại đây nếu cần
       } else {
         setUser(signedInUser);
         Alert.alert("⚠️ Email chưa xác minh", "Vui lòng kiểm tra hộp thư của bạn.");

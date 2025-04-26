@@ -59,7 +59,6 @@ const StatsScreen = () => {
     setStats(raw);
     setLoading(false);
 
-    // Unique correct words
     const correctSet = new Set(
       raw.filter((item) => item.correct).map((item) => item.cardId)
     );
@@ -99,11 +98,11 @@ const StatsScreen = () => {
         datasets: [
           {
             data: corrects,
-            color: () => 'rgba(76, 175, 80, 1)', // 🟩 Xanh cho đúng
+            color: () => 'rgba(76, 175, 80, 1)',
           },
           {
             data: incorrects,
-            color: () => 'rgba(244, 67, 54, 1)', // 🟥 Đỏ cho sai
+            color: () => 'rgba(244, 67, 54, 1)',
           },
         ],
         legend: ['Đúng', 'Sai'],
@@ -160,7 +159,7 @@ const StatsScreen = () => {
       chartData.datasets[0].data[index],
       chartData.datasets[1].data[index],
     ]),
-    barColors: ['#4CAF50', '#F44336'], // xanh và đỏ
+    barColors: ['#4CAF50', '#F44336'],
   }}
   width={screenWidth - 16}
   height={250}

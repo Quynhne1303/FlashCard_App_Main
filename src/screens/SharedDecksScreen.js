@@ -10,6 +10,24 @@ import {
 } from "react-native";
 import { getSharedDecks } from "../services/sharedDeckService";
 import { saveDeckTitle } from "../services/deckService";
+import { doc, deleteDoc } from "firebase/firestore";
+import { db } from "../firebase/firebaseConfig";
+import { getAuth } from "firebase/auth";
+import { updateOldSharedDecks } from "../services/sharedDeckService";
+
+export const deleteSharedDeck = async (deckId, ownerId) => {
+  const user = getAuth().currentUser;
+  if (!user) throw new Error("Bạn chưa đăng nhập");
+
+  if (user.uid !== ownerId) {
+    throw new Error("Bạn không có quyền xoá bộ thẻ này");
+  }
+
+  const deckRef = doc(db, "sharedDecks", deckId);
+  await deleteDoc(deckRef);
+};
+
+
 
 const SharedDecksScreen = ({ navigation }) => {
   const [sharedDecks, setSharedDecks] = useState([]);
@@ -18,6 +36,7 @@ const SharedDecksScreen = ({ navigation }) => {
   useEffect(() => {
     const fetchDecks = async () => {
       try {
+        await updateOldSharedDecks();
         const decks = await getSharedDecks();
         setSharedDecks(decks);
       } catch (error) {
@@ -26,13 +45,14 @@ const SharedDecksScreen = ({ navigation }) => {
         setLoading(false);
       }
     };
-
+  
     fetchDecks();
   }, []);
 
-  // ✅ Hàm lưu bộ thẻ (long press)
-  const promptSaveDeck = (deck) => {
-    Alert.alert("Lưu bộ thẻ", `Bạn có muốn lưu bộ thẻ "${deck.title}" không?`, [
+  const promptDeckAction = (deck) => {
+    const isOwner = deck.ownerId === getAuth().currentUser?.uid;
+  
+    const actions = [
       {
         text: "Huỷ",
         style: "cancel",
@@ -48,16 +68,34 @@ const SharedDecksScreen = ({ navigation }) => {
           }
         },
       },
-    ]);
+    ];
+  
+    if (isOwner) {
+      actions.push({
+        text: "🗑️ Xoá",
+        style: "destructive",
+        onPress: async () => {
+          try {
+            await deleteSharedDeck(deck.id, deck.ownerId);
+            Alert.alert("✅ Đã xoá bộ thẻ khỏi chia sẻ");
+            setSharedDecks((prev) => prev.filter((d) => d.id !== deck.id));
+          } catch (error) {
+            Alert.alert("Lỗi", error.message);
+          }
+        },
+      });
+    }
+  
+    Alert.alert(`Bộ thẻ "${deck.title}"`, "Bạn muốn thực hiện gì?", actions);
   };
-
-  // ✅ Render mỗi bộ thẻ
+  
   const renderDeck = ({ item }) => (
     <TouchableOpacity
       onPress={() =>
         navigation.navigate("DeckDetail", { deck: item, title: item.title })
       }
-      onLongPress={() => promptSaveDeck(item)}
+      onLongPress={() => promptDeckAction(item)}
+
       style={styles.deckCard}
     >
       <Text style={styles.deckTitle}>{item.title}</Text>

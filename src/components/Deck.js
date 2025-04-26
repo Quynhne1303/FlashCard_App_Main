@@ -1,14 +1,13 @@
-// components/Deck.js
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 const Deck = ({ title, onPress, onLongPress }) => {
   return (
     <TouchableOpacity
       style={styles.deck}
       onPress={onPress}
-      onLongPress={onLongPress} // 👈 hỗ trợ nhấn giữ để xoá
-      delayLongPress={500} // tuỳ chọn: giữ 0.5s sẽ kích hoạt
+      onLongPress={onLongPress}
+      delayLongPress={500}
     >
       <Text style={styles.title}>{title}</Text>
     </TouchableOpacity>

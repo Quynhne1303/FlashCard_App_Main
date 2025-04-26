@@ -1,4 +1,3 @@
-// src/screens/StudyScreen.js
 import React, { useEffect, useState } from 'react';
 import { View, Button, Text, Alert, TouchableOpacity } from 'react-native';
 import FlashCard from '../components/FlashCard';

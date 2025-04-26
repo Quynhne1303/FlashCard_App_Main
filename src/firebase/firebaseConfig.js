@@ -1,10 +1,8 @@
-// firebaseConfig.ts
 import { initializeApp } from 'firebase/app';
 import { getDatabase } from 'firebase/database';
 import { getStorage } from 'firebase/storage';
 import { getFirestore } from 'firebase/firestore';
 
-// ✅ Bổ sung các import dưới đây:
 import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -20,7 +18,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-// ✅ Dùng initializeAuth thay vì getAuth
 const auth = initializeAuth(app, {
   persistence: getReactNativePersistence(AsyncStorage),
 });

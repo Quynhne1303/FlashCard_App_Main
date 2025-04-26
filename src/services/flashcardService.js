@@ -1,12 +1,7 @@
-// services/flashCardService.js
 import { getDatabase, ref, push, set, update, remove, get, child } from 'firebase/database';
 import { getAuth } from 'firebase/auth';
 import { collection, getDocs, query, where, doc, setDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
-
-// ===========================
-// ✅ Với Firestore
-// ===========================
 
 // Tạo flashcard mới trong Firestore (theo deckId)
 export const createFlashcard = async (deckId, front, back) => {
@@ -47,10 +42,6 @@ export const getFlashcardsByDeck = async (deckId) => {
   return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
 
-// ===========================
-// 🔄 Tuỳ chọn thêm: Realtime Database
-// ===========================
-
 // Lấy tất cả flashcards từ Realtime Database (nếu dùng)
 export const getAllFlashcardsRealtime = async () => {
   const dbRef = ref(getDatabase());
@@ -65,8 +56,7 @@ export const getAllFlashcardsRealtime = async () => {
   return Object.values(data);
 };
 
-
-// Tạo flashcard trong Realtime Database (không dùng nếu bạn dùng Firestore)
+// Tạo flashcard trong Realtime Database
 export const createFlashcardRealtime = async (front, back) => {
   const db = getDatabase();
   const userId = getAuth().currentUser?.uid;

@@ -3,7 +3,7 @@ import { View, StyleSheet, Alert, KeyboardAvoidingView, Platform } from 'react-n
 import { TextInput, Button, Text } from 'react-native-paper';
 import { signUp } from '../services/authService';
 import { signOut } from 'firebase/auth';
-import { auth } from '../firebase/firebaseConfig'; // đúng đường dẫn
+import { auth } from '../firebase/firebaseConfig';
 
 export default function SignupScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -19,7 +19,6 @@ export default function SignupScreen({ navigation }) {
     try {
       await signUp(email, password);
 
-      // Đăng xuất để user = null, Navigator hiển thị lại màn hình Login
       await signOut(auth);
 
       Alert.alert(
@@ -27,7 +26,6 @@ export default function SignupScreen({ navigation }) {
         'Hệ thống đã gửi email xác nhận. Vui lòng xác minh email trước khi đăng nhập.'
       );
 
-      // KHÔNG cần gọi navigation.navigate('Login') nữa
     } catch (error) {
       Alert.alert('❌ Lỗi', error.message);
     }

@@ -1,4 +1,3 @@
-//services/authService.js
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -24,7 +23,6 @@ export const signIn = async (email, password) => {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
 
-    // Nếu bạn muốn ngăn user chưa xác minh đăng nhập vào app:
     if (!userCredential.user.emailVerified) {
       throw new Error('Email chưa được xác minh. Vui lòng kiểm tra hộp thư.');
     }

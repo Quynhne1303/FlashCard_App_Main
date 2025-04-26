@@ -1,4 +1,3 @@
-// services/deckService.js
 import {
   collection,
   getDocs,
@@ -14,7 +13,7 @@ import {
 import { db } from "../firebase/firebaseConfig";
 import { getAuth } from "firebase/auth";
 
-// ✅ Thêm bộ thẻ mới kèm các cards
+// Thêm bộ thẻ mới kèm các cards
 export const saveDeckWithCards = async (title, cards) => {
   const auth = getAuth();
   const userId = auth.currentUser?.uid;
@@ -35,7 +34,7 @@ export const saveDeckWithCards = async (title, cards) => {
   }
 };
 
-// ✅ Lấy danh sách các bộ thẻ
+// Lấy danh sách các bộ thẻ
 export const getDecks = async () => {
   const userId = getAuth().currentUser?.uid;
   if (!userId) throw new Error("Chưa đăng nhập");
@@ -49,7 +48,7 @@ export const getDecks = async () => {
   }));
 };
 
-// ✅ Thêm 1 bộ thẻ mới (không card)
+// Thêm 1 bộ thẻ mới (không card)
 export const saveDeckTitle = async (title) => {
   const auth = getAuth();
   const userId = auth.currentUser?.uid;
@@ -64,7 +63,7 @@ export const saveDeckTitle = async (title) => {
   await addDoc(collection(db, "decks"), newDeck);
 };
 
-// ✅ Xoá bộ thẻ
+// Xoá bộ thẻ
 export const deleteDeck = async (deckId) => {
   const userId = getAuth().currentUser?.uid;
   if (!userId) throw new Error("Chưa đăng nhập");
@@ -73,7 +72,7 @@ export const deleteDeck = async (deckId) => {
   await deleteDoc(deckRef);
 };
 
-// ✅ Cập nhật tiêu đề bộ thẻ (Update Title)
+// Cập nhật tiêu đề bộ thẻ (Update Title)
 export const updateDeckTitle = async (deckId, newTitle) => {
   const auth = getAuth();
   const userId = auth.currentUser?.uid;
